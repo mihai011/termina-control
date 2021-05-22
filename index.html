@@ -1,18 +1,49 @@
-<html>
 
+
+<html>
 <head>
-    
+  <title>terminal Control</title>
 </head>
 
 <body>
-    
-    <div id="example-3">
-        <button v-on:click="say('hi')">Say hi</button>
-        <button v-on:click="say('what')">Say what</button>
-    </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="index.js"></script>
-</body>
 
+
+    <form id='form'>
+        <input id='input'>
+    </form>
+
+    <textarea id="result" name="w3review" rows="50" cols="50">
+    </textarea>
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    var socket = io();
+
+    var enc = new TextDecoder("utf-8");
+
+
+    var form = document.getElementById('form');
+    var input = document.getElementById('input');
+    var result = document.getElementById('result');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (input.value) {
+        socket.emit('command', input.value);
+        input.value = '';
+        }
+        socket.on('result', function(msg){
+
+            result.value = enc.decode(msg);
+
+        });
+    });
+    </script>
+
+
+
+</body>
 </html>
+
