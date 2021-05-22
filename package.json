@@ -1,0 +1,27 @@
+{
+  "name": "terminal-control",
+  "version": "1.0.0",
+  "description": "an interface for your local terminal",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mihai011/terminal-control.git"
+  },
+  "keywords": [
+    "socket",
+    "terminal"
+  ],
+  "author": "mihai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mihai011/terminal-control/issues"
+  },
+  "homepage": "https://github.com/mihai011/terminal-control#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2"
+  }
+}
