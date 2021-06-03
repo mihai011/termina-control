@@ -4,11 +4,11 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const { spawn } = require('child_process');
 const pty = require('node-pty');
 
 app.use(express.static('public'))
 app.use(express.static('node_modules'))
+app.use(express.static("."))
 
 
 app.get('/', (req, res) => {
@@ -24,16 +24,15 @@ io.on('connection', (socket) => {
         encoding: 'utf8'
     });
 
-    term.on('data', function(data) {
+    term.on('data', function (data) {
 
-		socket.emit('result', data);
+        socket.emit('result', data)
 
-	});
+    });
 
     socket.on('command', (msg) => {
 
-        console.log('message: ' + msg);
-        term.write(data);
+        term.write(msg);
 
     });
 });
