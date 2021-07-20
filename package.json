@@ -24,12 +24,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "node-pty": "^0.10.1",
-    "socket.io": "^4.1.2",
+    "socket.io": "^4.1.3",
     "term.js": "^0.0.7",
-    "xterm": "^4.12.0",
+    "xterm": "^4.13.0",
     "xterm-addon-attach": "^0.6.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.12"
   }
 }

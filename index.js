@@ -25,9 +25,7 @@ io.on('connection', (socket) => {
     });
 
     term.on('data', function (data) {
-
-        socket.emit('result', data)
-
+        socket.emit('result', data);
     });
 
     socket.on('command', (msg) => {
