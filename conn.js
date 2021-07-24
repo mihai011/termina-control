@@ -23,6 +23,7 @@ socket.on("result", function (msg) {
 
 
 term.onKey(e => {
+    
     if (cur === "")
       barrier = term._core.buffer.x;
     cur += e.key;
@@ -43,10 +44,12 @@ term.onKey(e => {
         }
         term.write("\n");
         socket.emit("command", cur);
+        cur = cur.slice(0, -1);
         h.push(cur);
-        index_h == h.length-1;
+        index_h = h.length-1;
         cur = "";
         barrier = term._core.buffer.x;
+        console.log(h, index_h);
         break;
       case 8: // backspace
         // Do not delete the prompt
@@ -57,15 +60,27 @@ term.onKey(e => {
         }
         break;
       case 38: // up arrow
+        cur = cur.slice(0, -1);
         if (index_h > 0) {
+          console.log(cur);
+          for(var i=0; i<cur.length; i++)
+            term.write('\b \b');
           index_h -= 1;
           cur = h[index_h];
+          term._core.buffer.x = barrier+1;
+          // term.write(cur);
         }
         break;
       case 40: // down arrow
+        cur = cur.slice(0, -1);
         if (index_h < h.length-1){
+          console.log(cur);
+          for(var i=0; i<cur.length; i++)
+            term.write('\b \b');
           index_h += 1;
           cur = h[index_h];
+          term._core.buffer.x = barrier+1;
+          // term.write(cur);
         }
         break;
       case 9: // tab
