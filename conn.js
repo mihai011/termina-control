@@ -1,3 +1,4 @@
+
 var socket = io();
 var term = new Terminal({
     cols: 80,
@@ -11,40 +12,48 @@ var term = new Terminal({
 // term.loadAddon(new WebLinksAddon());
 term.open(document.getElementById("terminal"));
 var cur = "";
+var barrier = term._core.buffer.x;
+var h = new Array();
+var index_h = 0;
 
 // Receive data from socket
 socket.on("result", function (msg) {
     term.write("\r" + msg);
 })
 
-var h = new Array();
-var index_h = 0;
+
 term.onKey(e => {
+    if (cur === "")
+      barrier = term._core.buffer.x;
     cur += e.key;
-    
-    console.log(h, index_h, h.length);
-    console.log(index_h);
     // special commands
     switch (e.key){
       case "\u0003": // ctrl-c
         socket.emit("command", "\u0003");
+        cur = "";
         break;
     };
     
     switch (e.domEvent.keyCode) {
       case 13: // Enter
-          cur = cur.replace(/(\r\n|\n|\r)/gm, "\r")
-          if (cur != "\r")
-            term.write("\n");
-          socket.emit("command", cur);
-          h.push(cur);
-          index_h += 1;
+        if (cur === "\r" || cur === "" ){
           cur = "";
+          socket.emit("command", "\r");
           break;
+        }
+        term.write("\n");
+        socket.emit("command", cur);
+        h.push(cur);
+        index_h == h.length-1;
+        cur = "";
+        barrier = term._core.buffer.x;
+        break;
       case 8: // backspace
         // Do not delete the prompt
-        if (term._core.buffer.x > 47) {
+        if (term._core.buffer.x > barrier) {
           term.write('\b \b');
+          cur = cur.slice(0, -2);
+          console.log(cur);
         }
         break;
       case 38: // up arrow
@@ -54,12 +63,16 @@ term.onKey(e => {
         }
         break;
       case 40: // down arrow
-      if (index_h < h.length-1){
-        index_h += 1;
-        cur = h[index_h]
-        
-      }
-      break;
+        if (index_h < h.length-1){
+          index_h += 1;
+          cur = h[index_h];
+        }
+        break;
+      case 9: // tab
+        cur = cur.slice(0, -1);
+        term.write("  ");
+        cur += "  ";
+        break;
       default: // Print all other characters for demo
         term.write(e.key);
     }
