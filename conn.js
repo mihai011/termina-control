@@ -59,14 +59,18 @@ term.onKey(e => {
         break;
       case 38: // up arrow
         cur = cur.slice(0,-3);
-        if (index_h > 0) {
+        if (index_h > -1) {
           for(var i=0; i<cur.length; i++){
             term.write('\b \b');
           }
           cur = h[index_h];
-          console.log(h, index_h, h[index_h]);
           term.write(cur);
           index_h -= 1;
+          console.log(index_h, h.length);
+        }
+        else 
+        {
+          index_h = 0;
         }
         break;
       case 40: // down arrow
@@ -75,10 +79,10 @@ term.onKey(e => {
           for(var i=0; i<cur.length; i++){
             term.write('\b \b');
           }
-          cur = h[index_h];
-          console.log(h, index_h, barrier);
-          term.write(cur);
           index_h += 1;
+          cur = h[index_h];
+          term.write(cur);
+          console.log(index_h, h.length);
         }
         break;
       case 9: // tab
