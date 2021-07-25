@@ -63,10 +63,10 @@ term.onKey(e => {
           for(var i=0; i<cur.length; i++){
             term.write('\b \b');
           }
-          index_h -= 1;
           cur = h[index_h];
           console.log(h, index_h, h[index_h]);
           term.write(cur);
+          index_h -= 1;
         }
         break;
       case 40: // down arrow
@@ -75,10 +75,10 @@ term.onKey(e => {
           for(var i=0; i<cur.length; i++){
             term.write('\b \b');
           }
-          index_h += 1;
           cur = h[index_h];
           console.log(h, index_h, barrier);
           term.write(cur);
+          index_h += 1;
         }
         break;
       case 9: // tab
