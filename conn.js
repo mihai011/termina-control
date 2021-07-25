@@ -15,7 +15,6 @@ var cur = "";
 var barrier = term._core.buffer.x;
 var h = new Array();
 var index_h = 0;
-
 // Receive data from socket
 socket.on("result", function (msg) {
     term.write("\r" + msg);
@@ -49,38 +48,37 @@ term.onKey(e => {
         index_h = h.length-1;
         cur = "";
         barrier = term._core.buffer.x;
-        console.log(h, index_h);
+        console.log(h, index_h, barrier);
         break;
       case 8: // backspace
         // Do not delete the prompt
         if (term._core.buffer.x > barrier) {
-          term.write('\b \b');
           cur = cur.slice(0, -2);
-          console.log(cur);
+          term.write("\b \b");
         }
         break;
       case 38: // up arrow
-        cur = cur.slice(0, -1);
+        cur = cur.slice(0,-3);
         if (index_h > 0) {
-          console.log(cur);
-          for(var i=0; i<cur.length; i++)
+          for(var i=0; i<cur.length; i++){
             term.write('\b \b');
+          }
           index_h -= 1;
           cur = h[index_h];
-          term._core.buffer.x = barrier+1;
-          // term.write(cur);
+          console.log(h, index_h, h[index_h]);
+          term.write(cur);
         }
         break;
       case 40: // down arrow
-        cur = cur.slice(0, -1);
+        cur = cur.slice(0,-3);
         if (index_h < h.length-1){
-          console.log(cur);
-          for(var i=0; i<cur.length; i++)
+          for(var i=0; i<cur.length; i++){
             term.write('\b \b');
+          }
           index_h += 1;
           cur = h[index_h];
-          term._core.buffer.x = barrier+1;
-          // term.write(cur);
+          console.log(h, index_h, barrier);
+          term.write(cur);
         }
         break;
       case 9: // tab
